@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EcoTrack</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>EcoTrack - Carbon Footprint</h1>
+
+<div class="form">
+  <input type="text" id="activity" placeholder="Activity (e.g. Driving)">
+  <input type="number" id="co2" placeholder="CO2 value">
+  <select id="category">
+    <option>Transport</option>
+    <option>Food</option>
+    <option>Energy</option>
+  </select>
+  <button onclick="addActivity()">Add</button>
+</div>
+
+<h2>Total Emissions: <span id="total">0</span> kg</h2>
+
+<ul id="list"></ul>
+
+<script src="app.js"></script>
+</body>
+</html>
