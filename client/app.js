@@ -27,5 +27,19 @@ function display() {
 
   document.getElementById("total").textContent = total;
 }
+function getInsights() {
+  let categories = {};
+
+  activities.forEach(a => {
+    categories[a.category] = (categories[a.category] || 0) + a.co2;
+  });
+
+  let highest = Object.keys(categories).reduce((a, b) =>
+    categories[a] > categories[b] ? a : b
+  );
+
+  return `You produce most CO2 from ${highest}. Try reduce it.`;
+}
+
 
 display();
