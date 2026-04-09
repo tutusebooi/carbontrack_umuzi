@@ -2,27 +2,32 @@
 <html>
 <head>
   <title>EcoTrack</title>
-  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>EcoTrack - Carbon Footprint</h1>
+<h1>EcoTrack</h1>
 
-<div class="form">
-  <input type="text" id="activity" placeholder="Activity (e.g. Driving)">
-  <input type="number" id="co2" placeholder="CO2 value">
-  <select id="category">
-    <option>Transport</option>
-    <option>Food</option>
-    <option>Energy</option>
-  </select>
-  <button onclick="addActivity()">Add</button>
+<div id="auth">
+  <h2>Register</h2>
+  <input id="regEmail" placeholder="Email">
+  <input id="regPass" placeholder="Password">
+  <button onclick="register()">Register</button>
+
+  <h2>Login</h2>
+  <input id="logEmail" placeholder="Email">
+  <input id="logPass" placeholder="Password">
+  <button onclick="login()">Login</button>
 </div>
 
+<div id="app" style="display:none;">
+  <h2>Add Activity</h2>
+  <input id="activity" placeholder="Activity">
+  <input id="co2" type="number" placeholder="CO2">
+  <button onclick="addActivity()">Add</button>
 
-<h2>Total Emissions: <span id="total">0</span> kg</h2>
-
-<ul id="list"></ul>
+  <h3>Total: <span id="total">0</span></h3>
+  <ul id="list"></ul>
+</div>
 
 <script src="app.js"></script>
 </body>
