@@ -1,7 +1,17 @@
+// Get logged-in user safely
 const user = JSON.parse(localStorage.getItem("user"));
-let activities = JSON.parse(localStorage.getItem(user.email)) || [];
+
+if (!user || !user.email) {
+  alert("User not logged in properly");
+  window.location.href = "index.html";
+}
+
+// Use safe key
+let activities = JSON.parse(localStorage.getItem(`activities_${user.email}`)) || [];
 
 const list = document.getElementById("list");
+
+let chart; // prevent multiple charts
 
 function display() {
   list.innerHTML = "";
@@ -47,8 +57,13 @@ function display() {
 }
 
 function addActivity() {
-  const name = document.getElementById("name").value;
+  const name = document.getElementById("name").value.trim();
   const category = document.getElementById("category").value;
+
+  if (!name) {
+    alert("Please enter activity name");
+    return;
+  }
 
   const co2Values = {
     food: 1.5,
@@ -64,9 +79,13 @@ function addActivity() {
   };
 
   activities.push(activity);
-  localStorage.setItem(user.email, JSON.stringify(activities));
+
+  // Save correctly
+  localStorage.setItem(`activities_${user.email}`, JSON.stringify(activities));
 
   display();
+
+  document.getElementById("name").value = "";
 }
 
 function filterCategory(category) {
@@ -82,15 +101,20 @@ function filterCategory(category) {
 }
 
 function getTip(highest) {
-  if (highest === "transport") return "Use public transport  😅";
-  if (highest === "food") return "Eat less meat  😂";
-  if (highest === "energy") return "Save electricity  😭";
+  if (highest === "transport") return "Use public transport 😅 Your car will thank You";
+  if (highest === "food") return "Eat less meat 😂 vegetarian is an option";
+  if (highest === "energy") return "Save electricity 😭 Eskom will kill You";
 }
 
 function drawChart(categories) {
   const ctx = document.getElementById("chart");
 
-  new Chart(ctx, {
+  // destroy old chart (IMPORTANT FIX)
+  if (chart) {
+    chart.destroy();
+  }
+
+  chart = new Chart(ctx, {
     type: "pie",
     data: {
       labels: ["Food", "Transport", "Energy"],
@@ -105,4 +129,5 @@ function drawChart(categories) {
   });
 }
 
+// Load on start
 display();
