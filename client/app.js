@@ -1,81 +1,48 @@
-let currentUser = null;
-let activities = [];
+const API = "http://localhost:3000";
 
-// REGISTER
+// Tips
+const tips = [
+  "Use public transport  (your wallet will thank you 😅)",
+  "Eat less meat  (the cows are tired 😂)",
+  "Save electricity  (Eskom is watching 👀)"
+];
+
+document.getElementById("tips").textContent =
+  tips[Math.floor(Math.random() * tips.length)];
+
+// Register
 async function register() {
+  const username = document.getElementById("regUsername").value;
   const email = document.getElementById("regEmail").value;
-  const password = document.getElementById("regPass").value;
+  const password = document.getElementById("regPassword").value;
 
-  await fetch("http://localhost:3000/register", {
+  const res = await fetch(`${API}/register`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password })
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ username, email, password })
   });
 
-  alert("Registered! Now login.");
+  const data = await res.json();
+  alert(data.message);
 }
 
-// LOGIN
+// Login
 async function login() {
-  const email = document.getElementById("logEmail").value;
-  const password = document.getElementById("logPass").value;
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
 
-  const res = await fetch("http://localhost:3000/login", {
+  const res = await fetch(`${API}/login`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {"Content-Type": "application/json"},
     body: JSON.stringify({ email, password })
   });
 
   const data = await res.json();
 
-  if (data.email) {
-    currentUser = data.email;
-    activities = data.activities || [];
-
-    document.getElementById("auth").style.display = "none";
-    document.getElementById("app").style.display = "block";
-
-    display();
+  if (res.ok) {
+    localStorage.setItem("user", JSON.stringify(data.user));
+    window.location.href = "dashboard.html";
   } else {
-    alert("Login failed");
+    alert(data.message);
   }
-}
-
-// ADD ACTIVITY
-async function addActivity() {
-  const name = document.getElementById("activity").value;
-  const co2 = parseFloat(document.getElementById("co2").value);
-
-  const activity = { name, co2 };
-
-  const res = await fetch("http://localhost:3000/activity", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      email: currentUser,
-      activity
-    })
-  });
-
-  const data = await res.json();
-  activities = data.activities;
-
-  display();
-}
-
-// DISPLAY
-function display() {
-  const list = document.getElementById("list");
-  list.innerHTML = "";
-
-  let total = 0;
-
-  activities.forEach(a => {
-    total += a.co2;
-    const li = document.createElement("li");
-    li.textContent = `${a.name} - ${a.co2}`;
-    list.appendChild(li);
-  });
-
-  document.getElementById("total").textContent = total;
 }

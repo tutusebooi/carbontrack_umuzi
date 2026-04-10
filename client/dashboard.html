@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+</head>
+<body>
+
+<h1>🌍 CO₂ Dashboard</h1>
+
+<h2>Total CO₂: <span id="total">0</span> kg</h2>
+<p>Weekly CO₂: <span id="weekly">0</span></p>
+<p>Community Avg: <span id="community">10</span></p>
+
+<h3>Add Activity</h3>
+<input id="name" placeholder="Activity name">
+
+<select id="category">
+  <option value="food">Food</option>
+  <option value="transport">Transport</option>
+  <option value="energy">Energy</option>
+</select>
+
+<button onclick="addActivity()">Add</button>
+
+<h3>Filter</h3>
+<select onchange="filterCategory(this.value)">
+  <option value="all">All</option>
+  <option value="food">Food</option>
+  <option value="transport">Transport</option>
+  <option value="energy">Energy</option>
+</select>
+
+<h3>Activities</h3>
+<ul id="list"></ul>
+
+<h3>Breakdown</h3>
+<p>Food: <span id="food"></span></p>
+<p>Transport: <span id="transport"></span></p>
+<p>Energy: <span id="energy"></span></p>
+
+<h3>Insights</h3>
+<p id="insight"></p>
+
+<h3> Tips</h3>
+<p id="tip"></p>
+
+<canvas id="chart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="dashboard.js"></script>
+
+</body>
+</html>
